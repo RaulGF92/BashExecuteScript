@@ -86,9 +86,17 @@ class ControllerBash {
 		}
 		
 		String tmp=prop.getProperty("commandPermited");
-		String[] commandPermited;
-		//tenemos un string que hay que dividir en trozos mas pequeños
+		tmp=tmp.substring(0, tmp.length()-1);
+		String[] commandPermited=tmp.split(",");
 		
+		boolean equal=false;
+		for(int i=0;i<commandPermited.length;i++){
+			if(commandPermited[i]==command){
+				equal=true;
+			}
+		}
+		if(!equal)
+			throw new IlegalCommandException("The command send to execute don't have the permision to execute.");
 		
 	}
 }
