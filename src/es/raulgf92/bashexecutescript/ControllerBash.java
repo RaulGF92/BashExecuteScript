@@ -1,8 +1,12 @@
 package es.raulgf92.bashexecutescript;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -33,9 +37,41 @@ class ControllerBash {
 		
 	}
 	
-	public String ExecuteCommand(String command,List<String> args) throws CommandExecuteException,IlegalCommandException{
+	public String ExecuteCommand(BashService servicio) throws CommandExecuteException,IlegalCommandException{
+		
+		String response="";
+		String comand;
+		List<String> args;
+		
+		//preguntarse que Sistema operativo esta corriendo
+		String osName = System.getProperty ( "os.name" );
+		
+		
+		if(osName.contains("Windows")){
+			comand=servicio.winCommand;
+			args=servicio.args;
+		}else{
+			comand=servicio.unixCommand;
+			args=servicio.args;
+		}
+		
+		//Estudio del comando
+		checkCommand(comand, args);
+		
+		//Si llega aqui no hay ningun tipo de excepcion
+		response=makeCommand(comand, args);
+		
+		//Si no devuelve nada genera excepción
+		if(response=="")
+			throw new CommandExecuteException();
+		
+		return response;
+		
+	}
+	
+	private String makeCommand(String command,List<String> args) throws CommandExecuteException{
 		/**
-		 * ExecuteCommand
+		 * MakeCommand
 		 * 
 		 * Contruye un proceso nuevo que ejecuta el comando propocionado,añadiendole
 		 * la lista completa de todos los argumentos.
@@ -46,21 +82,35 @@ class ControllerBash {
 		 * @version 1.0
 		 * 
 		 */
-		
-		//Estudio del comando
-		checkCommand(command,args);
-		
 		String response="";
-		ProcessBuilder pb;
-		Process p;
-		
-		for(int i=0;i<12;i++)
-			System.out.println("Estoy trabajando muy muy duro :3");
+		ProcessBuilder processBuilder;
+		Process process;
 		
 		
-		//Si no devuelve nada genera excepción
-		if(response=="")
-			throw new CommandExecuteException();
+		
+		
+			List<String> commandComplete=new ArrayList<String>();
+			commandComplete.add(command);
+			commandComplete.addAll(args);
+			processBuilder=new ProcessBuilder(commandComplete);
+			
+			try{
+				process = processBuilder.start();
+				InputStream is = process.getInputStream();
+				InputStreamReader isr = new InputStreamReader(is);
+				BufferedReader br = new BufferedReader(isr);
+
+				String line;
+				while ((line = br.readLine()) != null) {
+					System.out.println(line);
+					response.concat(line);
+				}
+				
+			}catch(Exception e){
+				e.printStackTrace();
+				throw new CommandExecuteException();
+			}
+		    System.out.println("Program terminated!");
 		
 		return response;
 	}
@@ -91,12 +141,12 @@ class ControllerBash {
 		
 		boolean equal=false;
 		for(int i=0;i<commandPermited.length;i++){
-			if(commandPermited[i]==command){
+			if(commandPermited[i].compareTo(command)==0){
 				equal=true;
 			}
 		}
-		if(!equal)
+		if(!equal){
 			throw new IlegalCommandException("The command send to execute don't have the permision to execute.");
-		
+		}
 	}
 }
