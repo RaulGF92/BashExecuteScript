@@ -50,13 +50,20 @@ class ControllerBash {
 		if(osName.contains("Windows")){
 			comand=servicio.winCommand;
 			args=servicio.args;
+			
+			//Estudio del comando
+			checkCommand(comand, args);
+			
+			comand="CMD /C "+servicio.winCommand;
 		}else{
 			comand=servicio.unixCommand;
 			args=servicio.args;
+			
+			//Estudio del comando
+			checkCommand(comand, args);
 		}
 		
-		//Estudio del comando
-		checkCommand(comand, args);
+		
 		
 		//Si llega aqui no hay ningun tipo de excepcion
 		response=makeCommand(comand, args);
@@ -89,28 +96,29 @@ class ControllerBash {
 		
 		
 		
-			List<String> commandComplete=new ArrayList<String>();
-			commandComplete.add(command);
-			commandComplete.addAll(args);
-			processBuilder=new ProcessBuilder(commandComplete);
+			String commandComplete=command+"";
+			for(int i=0;i<args.size();i++){
+				commandComplete.concat("");
+				commandComplete.concat(args.get(i));
+			}
 			
 			try{
-				process = processBuilder.start();
+
+				process = Runtime.getRuntime().exec(commandComplete); 
 				InputStream is = process.getInputStream();
 				InputStreamReader isr = new InputStreamReader(is);
 				BufferedReader br = new BufferedReader(isr);
 
 				String line;
 				while ((line = br.readLine()) != null) {
-					System.out.println(line);
-					response.concat(line);
+					response += line +"\n";
 				}
 				
 			}catch(Exception e){
 				e.printStackTrace();
 				throw new CommandExecuteException();
 			}
-		    System.out.println("Program terminated!");
+		    System.out.println("Program terminated execute");
 		
 		return response;
 	}
