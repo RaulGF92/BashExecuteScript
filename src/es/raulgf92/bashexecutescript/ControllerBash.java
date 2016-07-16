@@ -38,7 +38,13 @@ class ControllerBash {
 	}
 	
 	public String ExecuteCommand(BashService servicio) throws CommandExecuteException,IlegalCommandException{
-		
+		/**
+		 * ExecuteCommand
+		 * 
+		 * Modifica las ordenes para realizar una ejecución en un entorno o en otro. Es la preparación de la ejecución
+		 * 
+		 * @version 1.0
+		 */
 		String response="";
 		String comand;
 		List<String> args;
