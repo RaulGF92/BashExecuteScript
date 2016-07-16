@@ -1,1 +1,3 @@
+scriptPathFolderWin="C://BashExecuteScript"
+scriptPathFolderUnix="/var/BashExecuteScript"
 commandPermited=python,java,javac,javadoc,gcc,dir,ls,notepad;
