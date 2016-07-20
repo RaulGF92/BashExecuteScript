@@ -1,4 +1,4 @@
-# BashExecuteScript
+﻿# BashExecuteScript
 
 Programa Java que permite la ejecución de servicios bash, para un posterior tratado de los resultados. Los servicios son entidades que deberan ser desarrolladas incluyendo unas caracteristicas comunes entre las que se incluye un script.
 
@@ -20,3 +20,6 @@ La versión incluye
 ## Versión 2.0 (on deploy)
 
 La segunda versión de esta aplicación ejecuta diversos servicios. Los diversos servicios contendran diversos script que seran ejecutados por el nucleo de la aplicación y devueltos a ellos mismos los datos procesados. 
+
+Notas: Para la ejecución en el entorno windows es necesario el cambiar las politicas utilizando el siguiente comando
+	Set-ExecutionPolicy RemoteSigned -Scope CurrentUser

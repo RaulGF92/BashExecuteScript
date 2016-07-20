@@ -48,6 +48,7 @@ class ControllerBash {
 		String response="";
 		String comand;
 		List<String> args;
+		Properties prop=this.getProperties();
 		
 		//preguntarse que Sistema operativo esta corriendo
 		String osName = System.getProperty ( "os.name" );
@@ -60,7 +61,8 @@ class ControllerBash {
 			//Estudio del comando
 			checkCommand(comand, args);
 			
-			comand="CMD /C "+servicio.winCommand;
+			//comand="powershell /C "+prop.getProperty("scriptGeneralWin")+" "+servicio.winCommand;
+			comand="powershell /C "+prop.getProperty("scriptGeneralWin")+" "+"prueba.ps1";
 		}else{
 			comand=servicio.unixCommand;
 			args=servicio.args;
@@ -128,17 +130,9 @@ class ControllerBash {
 		
 		return response;
 	}
-
-	private void checkCommand(String command, List<String> args)throws IlegalCommandException {
-	 /**
-	  * CheckCommand
-	  * 
-	  * Metodo que filtrara y comprobara si los comandos mandados son correctos.
-	  * Tambien filtrara las posibilidades y las ordenes que se realizaran
-	  * mediante un archivo properties.
-	  * 
-	  * @version 1.0
-	  */
+	
+	private Properties getProperties() throws IlegalCommandException{
+		
 		Properties prop=new Properties();
 		
 		//Si falla la lectura de properties lanza excepción error grave
@@ -149,7 +143,23 @@ class ControllerBash {
 			throw new IlegalCommandException("Can`t read the proporties file, try repair the properties load or properties syntax");
 		}
 		
-		String tmp=prop.getProperty("commandPermited");
+		return prop;
+	}
+	
+	private void checkCommand(String command, List<String> args)throws IlegalCommandException {
+	 /**
+	  * CheckCommand
+	  * 
+	  * Metodo que filtrara y comprobara si los comandos mandados son correctos.
+	  * Tambien filtrara las posibilidades y las ordenes que se realizaran
+	  * mediante un archivo properties.
+	  * 
+	  * @version 1.0
+	  */
+		
+		Properties prop=this.getProperties();
+		
+		String tmp=prop.getProperty("servicePermited");
 		tmp=tmp.substring(0, tmp.length()-1);
 		String[] commandPermited=tmp.split(",");
 		

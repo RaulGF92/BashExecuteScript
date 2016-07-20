@@ -8,7 +8,7 @@ import es.raulgf92.bashexecutescript.BashService;
 public class prueba1 extends BashService {
 
 	static String unixCommand="ls -l";
-	static String winCommand="dir";
+	static String winCommand="ls";
 	static List<String> args=new ArrayList<String>();
 	
 	public prueba1() {
