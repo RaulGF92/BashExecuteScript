@@ -28,7 +28,7 @@ import es.raulgf92.bashexecutescript.exception.*;
  *		- Error --> {@link CommandExecuteException} 
  *
  * @author Raulgf
- * @version 1.0
+ * @version 2.0
  * 
  */
 class ControllerBash {
@@ -38,14 +38,17 @@ class ControllerBash {
 	}
 	
 	public String ExecuteCommand(BashService servicio) throws CommandExecuteException,IlegalCommandException{
+		
 		/**
 		 * ExecuteCommand
 		 * 
 		 * Modifica las ordenes para realizar una ejecución en un entorno o en otro. Es la preparación de la ejecución
 		 * 
-		 * @version 1.0
+		 * @version 2.0
 		 */
+		
 		String response="";
+		String serviceScript;
 		String comand;
 		List<String> args;
 		Properties prop=this.getProperties();
@@ -55,16 +58,15 @@ class ControllerBash {
 		
 		
 		if(osName.contains("Windows")){
-			comand=servicio.winCommand;
+			serviceScript=servicio.winPathScriptService;
 			args=servicio.args;
 			
 			//Estudio del comando
-			checkCommand(comand, args);
+			checkCommand(servicio.serviceName, args);
 			
-			//comand="powershell /C "+prop.getProperty("scriptGeneralWin")+" "+servicio.winCommand;
-			comand="powershell /C "+prop.getProperty("scriptGeneralWin")+" "+"prueba.ps1";
+			comand="powershell /C "+serviceScript+" "+args;
 		}else{
-			comand=servicio.unixCommand;
+			comand=servicio.unixPathScriptService;
 			args=servicio.args;
 			
 			//Estudio del comando
@@ -94,7 +96,7 @@ class ControllerBash {
 		 * Devuelve la resolución de la ejecucion para ser tratado. Si proporciona error o es incorrecto
 		 * devuelve el fallo.
 		 * 
-		 * @version 1.0
+		 * @version 2.0
 		 * 
 		 */
 		String response="";
@@ -115,7 +117,7 @@ class ControllerBash {
 				process = Runtime.getRuntime().exec(commandComplete); 
 				InputStream is = process.getInputStream();
 				InputStreamReader isr = new InputStreamReader(is);
-				BufferedReader br = new BufferedReader(isr);
+  				BufferedReader br = new BufferedReader(isr);
 
 				String line;
 				while ((line = br.readLine()) != null) {
@@ -154,7 +156,7 @@ class ControllerBash {
 	  * Tambien filtrara las posibilidades y las ordenes que se realizaran
 	  * mediante un archivo properties.
 	  * 
-	  * @version 1.0
+	  * @version 2.0
 	  */
 		
 		Properties prop=this.getProperties();

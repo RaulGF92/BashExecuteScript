@@ -1,3 +1,3 @@
-scriptGeneralWin="C://BashExecuteScript/scriptPowerShellGeneral"
-scriptGeneralUnix="/var/BashExecuteScript/scriptBashGeneral"
+pathGeneralWin=C:\\BashExecuteScript
+pathGeneralUnix=/var/BashExecuteScript
 servicePermited=python,java,javac,javadoc,gcc,dir,ls,notepad;

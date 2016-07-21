@@ -7,12 +7,25 @@ import es.raulgf92.bashexecutescript.BashService;
 
 public class prueba1 extends BashService {
 
-	static String unixCommand="ls -l";
-	static String winCommand="ls";
+	static String nameService="ls";
+	static String unixScriptPATH="/var/BashExecuteScript/servicios/prueba1/prueba1";
+	static String winScriptPATH="C:\\\\BashExecuteScript\\servicios\\prueba1\\prueba.ps1";
 	static List<String> args=new ArrayList<String>();
 	
+	public String response="";
+	
 	public prueba1() {
-		super(unixCommand, winCommand, args);
+		super(nameService,unixScriptPATH, winScriptPATH, args);
+	}
+
+	@Override
+	public String parseScriptResponse() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void run(){
+		response=super.executeService();
 	}
 
 }
